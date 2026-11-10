@@ -7,7 +7,10 @@ if ! [[ "$port" =~ ^[1-9][0-9]{0,4}$ ]] || (( port > 65535 )); then
   echo "用法：./macos/build.sh [Memo 服务端口]" >&2
   exit 2
 fi
-app="$root/build/Memo.app"
+output="$root/build/Memo.app"
+staging="$(mktemp -d)"
+trap 'rm -r "$staging"' EXIT
+app="$staging/Memo.app"
 mkdir -p "$app/Contents/MacOS"
 xcrun clang -O2 -Wall -Wextra -fobjc-arc -mmacosx-version-min=13.0 \
   -framework AppKit "$root/macos/MemoMenu.m" -o "$app/Contents/MacOS/Memo"
@@ -30,7 +33,8 @@ cat > "$app/Contents/Info.plist" <<PLIST
 </dict>
 </plist>
 PLIST
-# A synced Desktop can attach Finder metadata to the generated bundle.
-xattr -d com.apple.FinderInfo "$app" 2>/dev/null || true
+# Sign before copying into the project, which may be in a synced Desktop folder.
 codesign --force --sign - "$app"
-printf '%s\n' "$app"
+mkdir -p "$root/build"
+ditto --norsrc --noextattr "$app" "$output"
+printf '%s\n' "$output"

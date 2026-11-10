@@ -22,8 +22,7 @@ typedef void (^ResponseHandler)(NSDictionary *response, NSString *error);
     self.address = [NSURL URLWithString:[NSString stringWithFormat:@"http://127.0.0.1:%@", port]];
     self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    self.statusItem.button.image = [NSImage imageWithSystemSymbolName:@"checklist" accessibilityDescription:@"Memo"];
-    self.statusItem.button.imagePosition = NSImageLeading;
+    self.statusItem.button.title = @"Memo";
     [self.statusItem.button setAccessibilityLabel:@"Memo"];
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@"Memo"];
     menu.autoenablesItems = NO;
@@ -83,7 +82,7 @@ typedef void (^ResponseHandler)(NSDictionary *response, NSString *error);
             ? response : nil;
         if (showResult) self.feedback = self.state ? @"已刷新。" : @"请确认 Python 服务已启动。";
         NSUInteger pending = [self.state[@"proposals"] count];
-        self.statusItem.button.title = pending ? [NSString stringWithFormat:@" %lu", (unsigned long)pending] : @"";
+        self.statusItem.button.title = pending ? [NSString stringWithFormat:@"Memo %lu", (unsigned long)pending] : @"Memo";
         self.statusItem.button.toolTip = self.state
             ? [NSString stringWithFormat:@"Memo · %lu 项待办 · %lu 条待确认", (unsigned long)self.tasks.count, (unsigned long)pending]
             : @"Memo · 服务未连接";
