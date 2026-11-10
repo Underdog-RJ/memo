@@ -16,13 +16,16 @@
     <section class="intro">
       <p class="eyebrow" id="today"></p>
       <h1>我的备忘录</h1>
-      <p>随手记一笔，之后再回来处理。</p>
+      <p>在 Codex 说「帮我记一下」，在这里查看记录和确认更新。</p>
     </section>
-    <form id="capture" class="panel composer">
-      <label for="text">记下什么？</label>
-      <textarea id="text" name="text" placeholder="比如，明天看一下支付回调，登录超时已经搞定了。" required maxlength="4000" rows="2"></textarea>
-      <div class="row"><span class="muted">Claude 会先为已有待办生成更新建议。</span><button type="submit" class="primary">交给 Memo</button></div>
-    </form>
+    <details class="panel composer">
+      <summary>网页手动录入</summary>
+      <form id="capture">
+        <label for="text">记下什么？</label>
+        <textarea id="text" name="text" placeholder="比如，明天看一下支付回调，登录超时已经搞定了。" required maxlength="4000" rows="2"></textarea>
+        <div class="row"><span class="muted">Claude 会先为已有待办生成更新建议。</span><button type="submit" class="primary">交给 Memo</button></div>
+      </form>
+    </details>
     <p id="feedback" class="feedback" role="status" hidden></p>
     <p id="setup" class="feedback" hidden></p>
 
@@ -47,7 +50,7 @@
       </form>
       <details class="section-line">
         <summary>Codex Hook 配置</summary>
-        <p class="muted">将以下 Stop hook 加到所选项目的 <code>.codex/hooks.json</code>，保留已有配置，再在 Codex 中审阅并信任它。</p>
+        <p class="muted">将以下 UserPromptSubmit 和 Stop hook 加到所选项目的 <code>.codex/hooks.json</code>，保留已有配置，再在 Codex 中审阅并信任它。</p>
         <pre id="hook"></pre>
         <button type="button" id="copy-hook" class="subtle">复制配置</button>
       </details>

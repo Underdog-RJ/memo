@@ -32,6 +32,7 @@ h3 { font-size: 14px; margin-bottom: 10px; }
 .muted, .path, .error { font-size: 13px; line-height: 1.55; }
 .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 17px; }
 .composer, .settings { padding: 19px; }
+.composer form { margin-top: 13px; }
 label { font-size: 14px; font-weight: 650; }
 textarea, input, select, button { font: inherit; }
 textarea, input:not([type=checkbox]), select {

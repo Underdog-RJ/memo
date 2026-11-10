@@ -134,7 +134,7 @@ function renderProposals() {
       evidence.append(element("summary", "Codex 来源 · " + proposal.sources.length + " 条"))
       for (const source of proposal.sources) {
         const snippet = element("blockquote", source.excerpt)
-        snippet.append(element("p", source.project + " · " + source.session + " / " + source.turn, "muted"))
+        snippet.append(element("p", (source.kind === "user_memo" ? "用户请求 · " : "Codex 回复 · ") + source.project + " · " + source.session + " / " + source.turn, "muted"))
         evidence.append(snippet)
       }
       entry.append(evidence)
