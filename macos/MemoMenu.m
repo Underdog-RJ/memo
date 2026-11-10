@@ -22,6 +22,7 @@ typedef void (^ResponseHandler)(NSDictionary *response, NSString *error);
     self.address = [NSURL URLWithString:[NSString stringWithFormat:@"http://127.0.0.1:%@", port]];
     self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    self.statusItem.autosaveName = @"Memo";
     self.statusItem.button.title = @"Memo";
     [self.statusItem.button setAccessibilityLabel:@"Memo"];
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@"Memo"];
