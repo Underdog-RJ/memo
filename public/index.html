@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Memo · 本地备忘录</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <div class="brand"><span class="mark" aria-hidden="true">M</span><span>Memo</span></div>
+      <div class="top-actions"><span class="badge"><span></span> 本机运行</span><button type="button" id="settings-toggle" class="subtle">设置</button></div>
+    </header>
+    <section class="intro">
+      <p class="eyebrow" id="today"></p>
+      <h1>我的备忘录</h1>
+      <p>随手记一笔，之后再回来处理。</p>
+    </section>
+    <form id="capture" class="panel composer">
+      <label for="text">记下什么？</label>
+      <textarea id="text" name="text" placeholder="比如，明天看一下支付回调，登录超时已经搞定了。" required maxlength="4000" rows="2"></textarea>
+      <div class="row"><span class="muted">Claude 会先为已有待办生成更新建议。</span><button type="submit" class="primary">交给 Memo</button></div>
+    </form>
+    <p id="feedback" class="feedback" role="status" hidden></p>
+    <p id="setup" class="feedback" hidden>在项目的 .env 中设置 ANTHROPIC_API_KEY 后重启，即可使用自然语言录入和汇总。</p>
+
+    <section id="settings" class="panel settings" hidden>
+      <div class="row"><h2>设置</h2><button type="button" id="close-settings" class="subtle">收起</button></div>
+      <form id="preferences">
+        <div class="fields">
+          <label>Claude 模型<input id="model" required placeholder="sonnet"></label>
+          <label>每日提醒<input id="reminder" type="time" required></label>
+          <label>每日汇总<input id="summary" type="time" required></label>
+        </div>
+        <div class="section-line">
+          <h3>Codex 项目</h3>
+          <p class="muted">填本机项目的完整目录。勾选后，汇总可将该项目的回复片段发送给 Anthropic。</p>
+          <div id="projects"></div>
+          <button type="button" id="add-project" class="subtle">＋ 添加目录</button>
+        </div>
+        <div class="row">
+          <span class="muted">Markdown 导出位置</span><button type="submit" class="primary">保存设置</button>
+        </div>
+        <p id="path" class="path"></p>
+      </form>
+      <details class="section-line">
+        <summary>Codex Hook 配置</summary>
+        <p class="muted">将以下 Stop hook 加到所选项目的 <code>.codex/hooks.json</code>，保留已有配置，再在 Codex 中审阅并信任它。</p>
+        <pre id="hook"></pre>
+        <button type="button" id="copy-hook" class="subtle">复制配置</button>
+      </details>
+    </section>
+
+    <div class="workspace">
+      <section class="panel list-panel" aria-labelledby="items-title">
+        <div class="row section-heading"><h2 id="items-title">备忘录</h2><span class="counter" id="item-count">0 项待办</span></div>
+        <div id="items"></div>
+      </section>
+      <section class="panel list-panel" id="inbox" aria-labelledby="inbox-title">
+        <div class="row section-heading"><h2 id="inbox-title">待确认</h2><span class="counter" id="inbox-count">0 条</span></div>
+        <div id="proposals"></div>
+        <div class="section-line inbox-footer">
+          <p id="queue" class="muted"></p>
+          <p id="schedule-error" class="error" hidden></p>
+          <button type="button" id="run-summary" class="subtle">立即汇总</button>
+        </div>
+      </section>
+    </div>
+    <footer><span>Memo</span><span id="schedule-text">09:00 提醒 · 21:00 汇总</span></footer>
+  </main>
+</body>
+</html>
