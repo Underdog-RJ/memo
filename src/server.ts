@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url"
 import { z } from "zod"
 import { defaultDataDir, Store } from "./store.js"
 import { claude } from "./model.js"
+import { modelProvider } from "./provider.js"
 import { Conflict, Memo, notifyMac, schedule, validDue } from "./memo.js"
 
 const root = fileURLToPath(new URL("../", import.meta.url))
@@ -69,7 +70,8 @@ export function startServer(memo: Memo, port: number, host = "127.0.0.1") {
     try {
       if (method === "GET") {
         if (route === "/api/state") {
-          return json(200, { ...memo.view(), configured: Boolean(process.env.ANTHROPIC_API_KEY?.trim()),
+          const provider = modelProvider()
+          return json(200, { ...memo.view(), provider, configured: Boolean(process.env[provider.keyName]?.trim()),
             hookConfig: hookConfig(memo.store.directory) })
         }
         const asset = route && assets.get(route)

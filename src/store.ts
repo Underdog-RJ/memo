@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto"
 import { mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from "node:fs"
 import { join, resolve } from "node:path"
 import { homedir } from "node:os"
+import { modelProvider } from "./provider.js"
 
 export const defaultDataDir = () => resolve(process.env.MEMO_DATA_DIR || join(homedir(), "Library", "Application Support", "Memo"))
 
@@ -77,7 +78,7 @@ export class Store {
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error
       this.current = {
-        settings: { model: "sonnet", reminderTime: "09:00", summaryTime: "21:00", projects: [] },
+        settings: { model: modelProvider().defaultModel, reminderTime: "09:00", summaryTime: "21:00", projects: [] },
         items: [], proposals: [], processed: [], schedule: { createdAt: new Date().toISOString() }
       }
       writeAtomic(this.statePath, JSON.stringify(this.current, null, 2))

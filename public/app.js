@@ -74,6 +74,7 @@ function projectRow(project = { path: "", allowModel: false }) {
 function loadSettings() {
   const { settings, hookConfig, markdownPath } = current
   $("model").value = settings.model
+  $("model").placeholder = current.provider.defaultModel
   $("reminder").value = settings.reminderTime
   $("summary").value = settings.summaryTime
   $("projects").replaceChildren()
@@ -167,6 +168,7 @@ async function refresh() {
     renderItems()
     renderProposals()
   }
+  $("setup").textContent = "在项目的 .env 中设置 " + data.provider.keyName + " 后重启，即可使用自然语言录入和汇总。"
   $("setup").hidden = data.configured
   $("queue").textContent = [
     data.waiting ? data.waiting + " 条 Codex 回复待汇总" : "没有待汇总的 Codex 回复",

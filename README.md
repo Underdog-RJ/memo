@@ -29,7 +29,7 @@ Memo 会直接新增「验证支付回调」，把到期日设为明天，再给
 
 ## 快速开始
 
-需要 macOS、Node.js 22.22+ 和 Anthropic API Key。
+需要 macOS、Node.js 22.22+，以及 Anthropic 或 DeepSeek API Key。
 
 ```bash
 git clone https://github.com/Underdog-RJ/memo.git
@@ -39,14 +39,23 @@ cp .env.example .env
 chmod 600 .env
 ```
 
-在 `.env` 中填写 `ANTHROPIC_API_KEY`，然后启动服务。
+使用 Anthropic 时，在 `.env` 中填写 `ANTHROPIC_API_KEY`。使用 DeepSeek 时，填写以下两项。内核仍通过 Claude Agent SDK 调用，默认模型为 `deepseek-flash`。
+
+```dotenv
+MEMO_MODEL_PROVIDER=deepseek
+DEEPSEEK_API_KEY=
+```
+
+[DeepSeek 的 Claude Code 接入文档](https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/)。
+
+配置完成后启动服务。
 
 ```bash
 npm run build
 npm start
 ```
 
-打开 [http://127.0.0.1:4317](http://127.0.0.1:4317)。在页面的「设置」中可以切换 Claude 模型、修改提醒和汇总时间。
+打开 [http://127.0.0.1:4317](http://127.0.0.1:4317)。在页面的「设置」中可以切换当前服务支持的模型、修改提醒和汇总时间。
 
 关闭网页后，服务仍继续运行。若希望 Mac 登录后自动启动，先停止手动启动的服务，再执行：
 
@@ -72,11 +81,11 @@ npm run login -- enable
 | `~/Library/Application Support/Memo/备忘录.md` | 可直接打开或备份的 Markdown 导出 |
 | 同目录下的 `state.json` | 记录、设置、待确认建议与汇总进度 |
 | 同目录下的 `codex/` | 采集的 Codex 回复片段 |
-| 项目内的 `.env` | Anthropic API Key 和可选的本地配置 |
+| 项目内的 `.env` | 模型服务、API Key 和可选的本地配置 |
 
 通过网页编辑记录，应用会同步刷新 Markdown。可在 `.env` 中设置 `MEMO_DATA_DIR` 来指定数据目录，或用 `MEMO_PORT` 修改端口。迁移数据目录后，记得从设置页重新复制 Hook 配置。
 
-网页提交的文本、相关待办和你授权的 Codex 片段会交给 Anthropic 推理。API Key 由本地服务读取。服务只监听本机回环地址。
+网页提交的文本、相关待办和你授权的 Codex 片段会交给当前配置的模型服务推理。API Key 由本地服务读取。服务只监听本机回环地址。
 
 ## 开发验证
 
@@ -84,7 +93,7 @@ npm run login -- enable
 npm test
 ```
 
-测试用替身模型验证新增、模糊匹配、人工确认、Codex Hook 去重、汇总重试、定时补跑和本地请求限制。真实推理需要配置 Anthropic API Key。
+测试用替身模型验证新增、模糊匹配、人工确认、Codex Hook 去重、汇总重试、定时补跑和本地请求限制。真实推理需要配置对应的 API Key。
 
 ```text
 网页输入 ──────────────┐
