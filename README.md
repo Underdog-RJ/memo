@@ -67,7 +67,7 @@ uv run --locked python -m memo.login enable
 
 ## macOS 菜单栏
 
-菜单栏显示「Memo」，有待确认项时会在旁边显示数量。展开可查看待办、确认指定建议、触发 Codex 汇总，或打开网页查看来源。录入仍可在 Codex 里完成。
+菜单栏显示一个带勾的小清单图标，有待确认项时会在旁边显示数量。展开可查看待办、确认指定建议、触发 Codex 汇总，或打开网页查看来源。录入仍可在 Codex 里完成。
 
 在 macOS 13+ 上安装Xcode Command Line Tools，启动 Python 服务后运行：
 

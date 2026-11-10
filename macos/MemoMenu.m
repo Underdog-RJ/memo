@@ -3,6 +3,27 @@
 typedef void (^MenuAction)(void);
 typedef void (^ResponseHandler)(NSDictionary *response, NSString *error);
 
+static NSImage *memoStatusIcon(void) {
+    NSImage *image = [NSImage imageWithSize:NSMakeSize(14, 14) flipped:NO drawingHandler:^BOOL(NSRect bounds) {
+        NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(bounds, 2.5, 1.5)
+                                                            xRadius:1.75 yRadius:1.75];
+        path.lineWidth = 1.1;
+        path.lineCapStyle = NSLineCapStyleRound;
+        path.lineJoinStyle = NSLineJoinStyleRound;
+        [path moveToPoint:NSMakePoint(4.75, 8.1)];
+        [path lineToPoint:NSMakePoint(6.2, 6.7)];
+        [path lineToPoint:NSMakePoint(9.3, 9.4)];
+        [path moveToPoint:NSMakePoint(5, 4.4)];
+        [path lineToPoint:NSMakePoint(9, 4.4)];
+        [NSColor.blackColor setStroke];
+        [path stroke];
+        return YES;
+    }];
+    image.template = YES;
+    image.accessibilityDescription = @"Memo";
+    return image;
+}
+
 @interface MemoMenu : NSObject <NSApplicationDelegate, NSMenuDelegate>
 @property (nonatomic, strong) NSURL *address;
 @property (nonatomic, strong) NSURLSession *session;
@@ -23,7 +44,8 @@ typedef void (^ResponseHandler)(NSDictionary *response, NSString *error);
     self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.autosaveName = @"Memo";
-    self.statusItem.button.title = @"Memo";
+    self.statusItem.button.image = memoStatusIcon();
+    self.statusItem.button.imagePosition = NSImageLeading;
     [self.statusItem.button setAccessibilityLabel:@"Memo"];
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@"Memo"];
     menu.autoenablesItems = NO;
@@ -83,7 +105,7 @@ typedef void (^ResponseHandler)(NSDictionary *response, NSString *error);
             ? response : nil;
         if (showResult) self.feedback = self.state ? @"已刷新。" : @"请确认 Python 服务已启动。";
         NSUInteger pending = [self.state[@"proposals"] count];
-        self.statusItem.button.title = pending ? [NSString stringWithFormat:@"Memo %lu", (unsigned long)pending] : @"Memo";
+        self.statusItem.button.title = pending ? [NSString stringWithFormat:@"%lu", (unsigned long)pending] : @"";
         self.statusItem.button.toolTip = self.state
             ? [NSString stringWithFormat:@"Memo · %lu 项待办 · %lu 条待确认", (unsigned long)self.tasks.count, (unsigned long)pending]
             : @"Memo · 服务未连接";
