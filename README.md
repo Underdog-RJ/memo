@@ -6,7 +6,7 @@
 
 Python 服务 · Markdown 文件 · Claude Agent SDK · Codex Hooks
 
-[快速开始](#快速开始) · [接入-codex](#接入-codex) · [数据与配置](#数据与配置)
+[快速开始](#快速开始) · [macOS 菜单栏](#macos-菜单栏) · [接入-codex](#接入-codex) · [数据与配置](#数据与配置)
 
 <img src="docs/preview.png" alt="Memo 本地页面，包含自然语言输入、待办列表和 Codex 更新建议" width="880">
 
@@ -64,6 +64,21 @@ uv run --locked python -m memo.login enable
 ```
 
 关闭登录启动时执行 `uv run --locked python -m memo.login disable`。首次使用时，可在 macOS 通知设置中允许对应通知。若登录启动在 Desktop 等受保护目录遇到访问限制，可将项目放到普通开发目录，再重新启用登录启动。
+
+## macOS 菜单栏
+
+菜单栏的清单图标会显示待确认数量。展开可查看待办、确认指定建议、触发 Codex 汇总，或打开网页查看来源。录入仍可在 Codex 里完成。
+
+在 macOS 13+ 上安装Xcode Command Line Tools，启动 Python 服务后运行：
+
+```bash
+./macos/build.sh
+open build/Memo.app
+```
+
+如果项目位于启用了同步的桌面目录，可以把构建好的 `Memo.app` 复制到个人「应用程序」目录后打开。
+
+客户端默认连接 `127.0.0.1:4317`。如果你修改过 `MEMO_PORT`，将相同端口传给构建脚本，例如 `./macos/build.sh 4320`。从菜单退出客户端后，Python 服务可继续采集和汇总。
 
 ## 接入 Codex
 
